@@ -1,0 +1,9 @@
+node_modules/
+.env
+*.env
+private/
+*.identity.json
+*.token
+logs/
+.dev-stage/
+.dev-backups/

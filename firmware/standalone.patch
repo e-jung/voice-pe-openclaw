@@ -1,0 +1,218 @@
+--- upstream/home-assistant-voice.realtime.yaml
++++ standalone.package.yaml
+@@ -39,7 +39,7 @@
+   # (new files, then a new pin), never a silent "@main" drift. CI checks the
+   # pin, the sha256 and the window below against models/ and its eval manifest.
+   wake_word_model: "github://TristanBrotherton/voicepe-realtime-firmware/models/hey_leonard.json@e56ee1259c09de6557cea571327b82bbf0928109"
+-  default_wake_word: "Hey Leonard"
++  default_wake_word: "Okay Nabu"
+   # Identity of the packaged model, reported to Home Assistant and the add-on.
+   wake_model_name: "hey_leonard"
+   wake_model_sha256: "8418e780218ccb4fcac490f0fe3952abbfaa86b49636ed5e1ce2dd48a4548e7c"
+@@ -69,36 +69,36 @@
+   # Change this to true in case you ahve a hidden SSID at home.
+   hidden_ssid: "false"
+   # Substitutions for audio files
+-  jack_connected_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/jack_connected.flac
+-  jack_disconnected_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/jack_disconnected.flac
+-  mute_switch_on_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/mute_switch_on.flac
+-  mute_switch_off_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/mute_switch_off.flac
++  jack_connected_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/jack_connected.flac
++  jack_disconnected_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/jack_disconnected.flac
++  mute_switch_on_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/mute_switch_on.flac
++  mute_switch_off_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/mute_switch_off.flac
+   # Gentle two-tone bell (synthesized, ~-14 dBFS) — the stock ring was "a
+-  # little intense" for a kitchen. Original: .../esphome/home-assistant-voice-pe/raw/dev/sounds/timer_finished.flac
+-  timer_finished_sound_file: https://raw.githubusercontent.com/TristanBrotherton/voicepe-realtime-firmware/main/sounds/gentle_timer.flac
+-  wake_word_triggered_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/wake_word_triggered.flac
+-  center_button_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/center_button_press.flac
+-  center_button_double_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/center_button_double_press.flac
+-  center_button_triple_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/center_button_triple_press.flac
+-  center_button_long_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/center_button_long_press.flac
+-  factory_reset_initiated_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/factory_reset_initiated.mp3
+-  factory_reset_cancelled_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/factory_reset_cancelled.mp3
+-  factory_reset_confirmed_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/factory_reset_confirmed.mp3
+-  easter_egg_tick_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/easter_egg_tick.mp3
+-  easter_egg_tada_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/easter_egg_tada.mp3
+-  error_cloud_expired_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/dev/sounds/error_cloud_expired.mp3
++  # little intense" for a kitchen. Original: .../esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/timer_finished.flac
++  timer_finished_sound_file: https://raw.githubusercontent.com/TristanBrotherton/voicepe-realtime-firmware/e9b874db0a6cd0950e6db9cd22a3e4499a4a6933/sounds/gentle_timer.flac
++  wake_word_triggered_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/wake_word_triggered.flac
++  center_button_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/center_button_press.flac
++  center_button_double_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/center_button_double_press.flac
++  center_button_triple_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/center_button_triple_press.flac
++  center_button_long_press_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/center_button_long_press.flac
++  factory_reset_initiated_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/factory_reset_initiated.mp3
++  factory_reset_cancelled_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/factory_reset_cancelled.mp3
++  factory_reset_confirmed_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/factory_reset_confirmed.mp3
++  easter_egg_tick_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/easter_egg_tick.mp3
++  easter_egg_tada_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/easter_egg_tada.mp3
++  error_cloud_expired_sound_file: https://github.com/esphome/home-assistant-voice-pe/raw/d4e6fa43d6a1a7d342b7d4d403567e06516719de/sounds/error_cloud_expired.mp3
+   # WebSocket endpoint of the "OpenAI Realtime Voice Agent" Home Assistant
+   # add-on (this fork's backend). The add-on runs with host_network and
+   # listens on port 8080. homeassistant.local resolves via mDNS on the LAN;
+   # change this if your HA host has a different name/IP, e.g.
+   # "ws://192.0.2.10:8080/".
+-  va_url: "ws://homeassistant.local:8080/"
++  va_url: "ws://192.0.2.10:8080/"
+   # Shared secret for the add-on's device_token option (sent as an
+   # Authorization header). Empty = no token, for add-ons without one.
+   va_token: ""
+   # Git ref the va_client C++ is fetched from. Pin it to the same tag/commit as
+   # this package for reproducible builds.
+-  va_client_ref: "main"
++  va_client_ref: "e9b874db0a6cd0950e6db9cd22a3e4499a4a6933"
+   # Firmware version reported to Home Assistant and in the wake message.
+   fw_version: "1.3.0"
+ 
+@@ -113,36 +113,39 @@
+     version: "${fw_version}"
+   min_version: 2026.5.0
+   on_boot:
+-    priority: 375
+-    then:
+-      # Run the script to refresh the LED status
+-      - script.execute: control_leds
+-      - delay: 1s
+-      - switch.turn_on: internal_speaker_amp
+-      # va-direct: original on_client_connected did clear-init + start-mww +
+-      # phase=idle. clear-init + phase=idle stay here; micro_wake_word.start
+-      # moved to api.on_client_connected (see above) because on_boot+1s raced
+-      # the XMOS voice-kit and mWW never heard the mic. The control_leds
+-      # dispatcher routes to no_ha_connection (red twinkle) until both wifi and
+-      # va_client WS come up — then it falls through to the idle phase naturally.
+-      - lambda: id(init_in_progress) = false;
+-      # LOCAL EDIT: seed va_client at unity (0 when muted). The media_player
+-      # knob already scales ALL output in hardware (mixer/resampler forward
+-      # set_volume to the i2s leaf -> AIC3204 DAC), so mirroring the knob into
+-      # the va_client sample scaler attenuated TTS twice: at knob 0.5 the
+-      # assistant's voice was 6 dB quieter than the device's own chimes.
+-      - lambda: |-
+-          id(va).set_volume(id(external_media_player).is_muted() ? 0.0f : 1.0f);
+-      - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
+-      - script.execute: control_leds
+-      # If after 10 minutes, the device is still initializing (It did not yet connect to Home Assistant), turn off the init_in_progress variable and run the script to refresh the LED status
+-      - delay: 10min
+-      - if:
+-          condition:
+-            lambda: return id(init_in_progress);
+-          then:
+-            - lambda: id(init_in_progress) = false;
+-            - script.execute: control_leds
++    - priority: 375
++      then:
++        # Run the script to refresh the LED status
++        - script.execute: control_leds
++        - delay: 1s
++        - switch.turn_on: internal_speaker_amp
++        # va-direct: original on_client_connected did clear-init + start-mww +
++        # phase=idle. clear-init + phase=idle stay here; micro_wake_word.start
++        # moved to api.on_client_connected (see above) because on_boot+1s raced
++        # the XMOS voice-kit and mWW never heard the mic. The control_leds
++        # dispatcher routes to no_ha_connection (red twinkle) until both wifi and
++        # va_client WS come up — then it falls through to the idle phase naturally.
++        - lambda: id(init_in_progress) = false;
++        # LOCAL EDIT: seed va_client at unity (0 when muted). The media_player
++        # knob already scales ALL output in hardware (mixer/resampler forward
++        # set_volume to the i2s leaf -> AIC3204 DAC), so mirroring the knob into
++        # the va_client sample scaler attenuated TTS twice: at knob 0.5 the
++        # assistant's voice was 6 dB quieter than the device's own chimes.
++        - lambda: |-
++            id(va).set_volume(id(external_media_player).is_muted() ? 0.0f : 1.0f);
++        - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
++        - script.execute: control_leds
++        # If after 10 minutes, the device is still initializing (It did not yet connect to Home Assistant), turn off the init_in_progress variable and run the script to refresh the LED status
++        - delay: 10min
++        - if:
++            condition:
++              lambda: return id(init_in_progress);
++            then:
++              - lambda: id(init_in_progress) = false;
++              - script.execute: control_leds
++    - priority: -100
++      then:
++        - script.execute: standalone_start_wake
+ 
+ esp32:
+   board: esp32-s3-devkitc-1
+@@ -221,6 +224,7 @@
+ # ESPHome advertises _esphomelib over mDNS automatically, so the old manual
+ # mdns workaround is no longer needed.
+ api:
++  reboot_timeout: 0s  # Standalone: no HA API client must not cause periodic reboot.
+   encryption:
+     key: ${api_key}
+   # va-direct: start micro_wake_word HERE (mirrors stock home-assistant-voice.yaml
+@@ -229,7 +233,7 @@
+   # wasn't streaming yet and never recover — the wake word silently never fired.
+   # on_client_connected runs once HA + WiFi + the audio path are fully up.
+   on_client_connected:
+-    - micro_wake_word.start:
++    - script.execute: standalone_start_wake
+     # Keep "stop" disabled in the resting/idle state; on_phase arms it only while
+     # the assistant is replying. Explicit here so the boot state is deterministic
+     # regardless of whether the HA api or the va_client WS connects first.
+@@ -1359,6 +1363,25 @@
+       - easter_egg_press
+ 
+ script:
++  # HA-independent wake start. Readiness is a gate, not a fixed boot delay.
++  # can_proceed() is true on failure too: always exclude is_failed().
++  - id: standalone_start_wake
++    mode: single
++    then:
++      - wait_until:
++          condition:
++            lambda: return id(voice_kit_component).can_proceed();
++          timeout: 60s
++      - if:
++          condition:
++            lambda: return id(voice_kit_component).can_proceed() && !id(voice_kit_component).is_failed();
++          then:
++            - micro_wake_word.start:
++            - script.execute: apply_wake_word_selection
++          else:
++            - logger.log:
++                level: ERROR
++                format: "Standalone wake startup blocked: Voice Kit failed or not ready"
+   # Ends the wake_detected_pulse. mode: restart so rapid re-wakes extend the
+   # pulse instead of cutting it short.
+   - id: wake_pulse_reset
+@@ -2104,12 +2127,10 @@
+ # Sendspin related components are pinned to specific commits for reproducible builds
+ external_components:
+   - source:
+-      type: git
+-      url: https://github.com/esphome/home-assistant-voice-pe
+-      ref: dev
++      type: local
++      path: vendor/official/components
+     components:
+       - voice_kit
+-    refresh: 0s
+   # va_client (the OpenAI-realtime thin client) lives in THIS repo. It is pulled
+   # from GitHub (public, no token) so the config builds without a local checkout.
+   # ref selects the channel (main = stable, dev = WIP); refresh: 0s = always
+@@ -2117,11 +2138,9 @@
+   # swap this for:
+   #   - source: {type: local, path: esphome/components}
+   - source:
+-      type: git
+-      url: https://github.com/TristanBrotherton/voicepe-realtime-firmware
+-      ref: ${va_client_ref}
++      type: local
++      path: vendor/community/esphome/components
+     components: [va_client]
+-    refresh: 0s
+ 
+ # va-direct: forward device logs to a UDP sink container on the Pi so they
+ # show up in Dozzle alongside the rest of the stack. See voice-pe-logs in
+@@ -2198,7 +2217,7 @@
+         condition:
+           lambda: 'return phase == "idle";'
+         then:
+-          - micro_wake_word.start:
++          - script.execute: standalone_start_wake
+           # Re-enable the SELECTED start word (no-op unless enrollment disabled it).
+           - script.execute: apply_wake_word_selection
+     # Arm "stop" for the WHOLE reply AND through the follow-up listening window —

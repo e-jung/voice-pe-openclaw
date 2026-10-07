@@ -1,0 +1,105 @@
+--- upstream/esphome/components/va_client/va_client.cpp
++++ vendor/community/esphome/components/va_client/va_client.cpp
+@@ -118,6 +118,26 @@
+ }
+ 
+ void VaClient::loop() {
++  if (this->server_clear_pending_.exchange(false)) {
++    const uint32_t seq = this->server_clear_seq_.load();
++    portENTER_CRITICAL(&this->ring_mux_);
++    this->audio_head_ = this->audio_tail_ = this->audio_fill_ = 0;
++    portEXIT_CRITICAL(&this->ring_mux_);
++    this->playback_priming_ = false;
++    this->chain_prime_remaining_ = 0;
++    this->followup_pending_ = false;
++    this->waiting_for_speaker_stop_ = false;
++    this->request_follow_up_pending_ = false;
++    this->followup_armed_ = false;
++    this->idle_emit_pending_ = false;
++    this->suppress_followup_ = true;
++    this->cancel_timeout("va_followup");
++    this->cancel_timeout("va_followup_open");
++    this->cancel_timeout("va_tts_tail");
++    if (this->speaker_ != nullptr) this->speaker_->stop();
++    // ACK means PSRAM empty and downstream stop requested, NOT DAC silence.
++    this->send_text_("{\"type\":\"cleared\",\"seq\":" + std::to_string(seq) + "}", 100);
++  }
+   // Drain the audio ring buffer into the speaker. speaker.play() accepts
+   // only what fits in its own ring (returns the count actually queued).
+   if (this->speaker_ != nullptr && this->audio_buf_ != nullptr) {
+@@ -244,6 +264,7 @@
+       const Phase phase_now = static_cast<Phase>(this->current_phase_.load());
+       const uint32_t now_ms = millis();
+       if (phase_now == Phase::REPLYING && !this->suppress_incoming_audio_ &&
++          !this->server_audio_blocked_.load() &&
+           !this->post_stop_guard_ &&
+           (this->reply_keepalive_next_ms_ == 0 ||
+            static_cast<int32_t>(now_ms - this->reply_keepalive_next_ms_) >= 0)) {
+@@ -437,7 +458,7 @@
+         }
+       });
+ 
+-      const char start_msg[] = "{\"type\":\"start\"}";
++      const char start_msg[] = "{\"type\":\"start\",\"capabilities\":[\"clear-v1\"]}";
+       auto handle = static_cast<esp_websocket_client_handle_t>(this->ws_handle_);
+       esp_websocket_client_send_text(handle, start_msg, sizeof(start_msg) - 1, portMAX_DELAY);
+       this->set_phase_("idle");
+@@ -497,6 +518,15 @@
+   std::string msg(data, len);
+   ESP_LOGD(TAG, "WS text: %s", msg.c_str());
+ 
++  if (msg.find("\"type\":\"clear\"") != std::string::npos) {
++    uint32_t seq = 0;
++    if (!parse_uint_after_key(msg, "\"seq\":", seq)) return;
++    this->server_audio_blocked_.store(true);
++    this->server_clear_seq_.store(seq);
++    this->server_clear_pending_.store(true);
++    return;
++  }
++
+   if (msg.find("\"type\":\"error\"") != std::string::npos) {
+     ESP_LOGW(TAG, "Server reported error: %s", msg.c_str());
+     if (msg.find("\"audible\":true") != std::string::npos) {
+@@ -623,6 +653,7 @@
+ }
+ 
+ void VaClient::handle_binary_(const uint8_t *data, size_t len) {
++  if (this->server_audio_blocked_.load()) return;
+   if (this->speaker_ == nullptr || len < 2 || this->audio_buf_ == nullptr)
+     return;
+   // After a "stop"/barge-in (send_interrupt) the backend is still streaming the
+@@ -706,6 +737,10 @@
+   // to guarantee that ordering — len is at most a few KB per WS frame
+   // and PSRAM memcpy is ~10–20 µs, well under any audio deadline.
+   portENTER_CRITICAL(&this->ring_mux_);
++  if (this->server_audio_blocked_.load()) {
++    portEXIT_CRITICAL(&this->ring_mux_);
++    return;
++  }
+   const bool was_empty = (this->audio_fill_ == 0);
+   size_t tail = this->audio_tail_;
+   size_t first = std::min(len, kAudioBufBytes - tail);
+@@ -885,6 +920,10 @@
+   // preceded by "listening" (the user speaks), so that stays the only safe
+   // gate; until then the tail keeps being dropped. We also do NOT clear on
+   // "thinking"/"replying" — those can still belong to the reply we cancelled.
++  if (phase == "listening" && !this->server_clear_pending_.load()) {
++    this->server_audio_blocked_.store(false);
++    this->suppress_followup_ = false;
++  }
+   if (this->suppress_incoming_audio_ && phase == "listening") {
+     this->suppress_incoming_audio_ = false;
+     ESP_LOGI(TAG, "incoming-audio suppression lifted on phase=listening");
+--- upstream/esphome/components/va_client/va_client.h
++++ vendor/community/esphome/components/va_client/va_client.h
+@@ -320,6 +320,10 @@
+   // cancelled reply actually goes silent. Cleared in set_phase_ on the next
+   // "idle" (reply ended) or "listening" (a fresh turn's audio is legitimate).
+   bool suppress_incoming_audio_{false};
++  // clear-v1: WS task blocks PCM immediately, main loop owns speaker stop.
++  std::atomic<bool> server_audio_blocked_{false};
++  std::atomic<bool> server_clear_pending_{false};
++  std::atomic<uint32_t> server_clear_seq_{0};
+   // Set by send_interrupt() (a local "stop"), cleared in start_session() (the
+   // next wake). After a stop the mic gate is CLOSED, so no new turn can begin
+   // until a wake — yet OpenAI's server VAD can still fire an end-of-turn for

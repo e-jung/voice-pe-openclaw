@@ -1,0 +1,12 @@
+node_modules
+test
+scripts
+.env
+private
+*.env
+*.identity.json
+*.token
+.git
+logs
+.dev-stage
+.dev-backups

@@ -1,0 +1,28 @@
+# Review/prepare only. No service has been created or started on the NAS.
+# Use an env file held on the deployment host, not in this repository.
+services:
+  voice-pe-adapter:
+    build:
+      context: .
+      args:
+        OPENCLAW_VERSION: "2026.9.8"
+    env_file: /absolute/private/path/voice-pe-adapter.env
+    environment:
+      VOICE_PE_BIND: 0.0.0.0
+      VOICE_PE_GATEWAY_IDENTITY_FILE: /run/secrets/gateway-identity.json
+    volumes:
+      - /absolute/private/path/gateway-identity.json:/run/secrets/gateway-identity.json:ro
+    # Intentionally bind to one explicit private LAN IP, not all host interfaces.
+    ports:
+      - "${VOICE_PE_LAN_IP:?Set the NAS private LAN address}:8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=32m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    cpus: 0.5
+    pids_limit: 128
+    restart: unless-stopped
